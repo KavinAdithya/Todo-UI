@@ -1,14 +1,16 @@
-
 import { useState } from 'react';
 import {useNavigate} from 'react-router-dom'
+import { useAuth } from './security/AuthenticationComponent';
+import './TodoApp.css'
 
 function LoginComponent() {
     const [username, setUsername] = useState("Techcrack")
-    const [password, setPassword] = useState("Techcrack@3")
+    const [password, setPassword] = useState("Kavin@3")
 
-    const [isSuccess, setIsSucess] = useState(false)
     const [isFailed, setIsFailed] = useState(false)
     const navigate = useNavigate()
+    
+    const auth = useAuth();
     
 
     function setUserNameState(event) {
@@ -20,13 +22,10 @@ function LoginComponent() {
     }
 
     function authenticateUserCredentials() {
-        if (username === "Techcrack" && password === "Kavin@3") {
+        if (auth.login(username, password)) {
             navigate(`/welcome/${username}`)
-            setIsSucess(true)
-            setIsFailed(false)
         }
         else  {
-            setIsSucess(false)
             setIsFailed(true)
         } 
     }
@@ -36,7 +35,6 @@ function LoginComponent() {
             <h1>
                 Time To Lead !
             </h1>
-            {isSuccess && <div>Successfully Authenticated {username} !</div>}
             {isFailed && <div> Failed to authenticate you credentials.</div>}
             <div>
                 <label>User Name : </label>

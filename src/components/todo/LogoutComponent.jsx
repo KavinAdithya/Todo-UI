@@ -1,4 +1,6 @@
+
 function LogoutComponent() {
+
     return (
         <div className='LogoutComponent'>
             <div>

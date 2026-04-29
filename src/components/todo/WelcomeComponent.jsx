@@ -1,7 +1,13 @@
-import {useParams, Link} from 'react-router-dom'
+import {useParams, Link, Navigate} from 'react-router-dom'
+import { useAuth } from './security/AuthenticationComponent';
 
 function WelcomeComponent() {
     const {username} = useParams()
+
+     const auth = useAuth();
+
+    if (!auth.isAuthenticated)
+        return <Navigate to='/login'/>
 
     return (
         <div className="WelcomeComponent">

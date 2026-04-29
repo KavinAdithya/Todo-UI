@@ -1,6 +1,9 @@
 import {Link} from 'react-router-dom'
+import { useAuth } from './security/AuthenticationComponent';
 
 function HeaderComponent() {
+    const auth = useAuth();
+
     return (
         <header className="border-bottom border-light border-5 mb-5 p-2">
             <div className="container">
@@ -9,13 +12,33 @@ function HeaderComponent() {
                         <a className="navbar-brand ms-2 fs-2 fw-bold text-black" href="https://www.youtube.com">Techcrack</a>
                         <div className="collapse navbar-collapse">
                             <ul className="navbar-nav">
-                                <li className="nav-item fs-5"><Link className="nav-link" to="/welcome/Techcrack">Home</Link></li>
-                                <li className="nav-item fs-5"><Link className="nav-link" to="/todos">Todos</Link></li>
+                                <li className="nav-item fs-5">
+                                    { auth.isAuthenticated && 
+                                        <Link className="nav-link" to="/welcome/Techcrack">
+                                            Home
+                                        </Link> } 
+                                </li>
+                                <li className="nav-item fs-5">
+                                     { auth.isAuthenticated && 
+                                        <Link className="nav-link" to="/todos">
+                                            Todos
+                                        </Link> }
+                                </li> 
                             </ul>
                         </div>
                         <ul className="navbar-nav">
-                            <li className="nav-item fs-5"><Link className="nav-link" to="/login">Login</Link></li>
-                            <li className="nav-item fs-5"><Link className="nav-link" to="/logout">Logout</Link></li>
+                            <li className="nav-item fs-5">
+                                {!auth.isAuthenticated &&
+                                    <Link className="nav-link" to="/login">
+                                        Login
+                                    </Link> }
+                            </li>
+                            <li className="nav-item fs-5">
+                                {auth.isAuthenticated &&
+                                    <Link className="nav-link" to="/logout" onClick={auth.logout}>
+                                        Logout
+                                    </Link> }
+                                </li>
                         </ul>
                     </nav>
                 </div>
