@@ -4,8 +4,8 @@ import { useAuth } from './security/AuthenticationComponent';
 import './TodoApp.css'
 
 function LoginComponent() {
-    const [username, setUsername] = useState("Techcrack")
-    const [password, setPassword] = useState("Kavin@3")
+    const [username, setUsername] = useState("dummy")
+    const [password, setPassword] = useState("Techcrack@3")
 
     const [isFailed, setIsFailed] = useState(false)
     const navigate = useNavigate()

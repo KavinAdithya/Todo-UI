@@ -3,8 +3,7 @@ import { useAuth } from './security/AuthenticationComponent';
 
 function WelcomeComponent() {
     const {username} = useParams()
-
-     const auth = useAuth();
+    const auth = useAuth();
 
     if (!auth.isAuthenticated)
         return <Navigate to='/login'/>

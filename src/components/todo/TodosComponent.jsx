@@ -1,14 +1,29 @@
+import { useEffect, useState } from "react";
+import { retrieveAllTodos } from "./service/TodosApiService";
 
 function TodosComponent() {
 
-    const todayDate = new Date()
-    const targetDate = new Date(todayDate.getFullYear() + 4, todayDate.getMonth(), todayDate.getDate())
-    const todos = [
-        {id : 1, description : "Learn Java", isDone : false, targetDate : targetDate}, 
-        {id : 2, description : "Master technology", isDone : false, targetDate : targetDate},
-        {id : 3, description : "Achieve Dreams", isDone : false, targetDate : targetDate},
-    ]
+    const [todos, setTodos] = useState([])
 
+    try {
+        useEffect(() => {
+            async function retrieveTodos() {
+
+                const response = await retrieveAllTodos("dummy")
+
+                setTodos(response.data.data);
+                console.log(response)
+            }
+            retrieveTodos();
+
+        }, [])
+
+        
+    } catch (error) {
+        console.log("Exception From APi")
+        console.log(error)
+    }
+    
     return (
         <div className='container'>
             <h1> Manage Your Habits </h1>
@@ -16,6 +31,7 @@ function TodosComponent() {
                 <thead>
                     <tr>
                         <td>Id</td>
+                        <td>Title</td>
                         <td>Description</td>
                         <td>Is Done?</td>
                         <td>Target Date</td>
@@ -25,11 +41,12 @@ function TodosComponent() {
                     {
                         todos.map(
                             todo => (
-                               <tr>
+                               <tr key={todo.id}>
                                     <td>{todo.id}</td>
+                                    <td>{todo.todoTitle}</td>
                                     <td>{todo.description}</td>
-                                    <td>{todo.isDone.toString()}</td>
-                                    <td>{todo.targetDate.toDateString()}</td>
+                                    <td>{todo.completed ? "Completed" : "Pending"}</td>
+                                    <td>{todo.dueDate}</td>
                                </tr> 
                             )
                         )

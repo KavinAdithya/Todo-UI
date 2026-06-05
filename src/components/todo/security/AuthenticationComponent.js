@@ -1,5 +1,6 @@
 import { createContext,  useContext,  useState } from "react";
 import { Navigate } from "react-router-dom";
+import { executeJwtAuthentication } from "../service/AuthApiService";
 
 export const ApplicationContext = createContext();
 
@@ -15,15 +16,20 @@ export function AuthenticatedRoute({children}) {
 function AuthenticationComponent({children}) {
     const [isAuthenticated, setIsAuthenticated] = useState(false)
 
-    function login(username, password) {
-        if (username === "Techcrack" && password === "Kavin@3") {
+    async function login(username, password) {
+        try {
+
+            const response = await executeJwtAuthentication(username, password)
             setIsAuthenticated(true)
+
+            localStorage.setItem("token", response.data);
+
             return true
-        }
-        else  {
+        } catch (error) {
             setIsAuthenticated(false)
+            console.log(error)
             return false
-        } 
+        }
     }
 
     function logout() {
