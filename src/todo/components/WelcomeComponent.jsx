@@ -1,5 +1,5 @@
 import {useParams, Link, Navigate} from 'react-router-dom'
-import { useAuth } from './security/AuthenticationComponent';
+import { useAuth } from '../security/AuthenticationComponent';
 
 function WelcomeComponent() {
     const {username} = useParams()

@@ -2,7 +2,7 @@ function FooterComponent() {
     return (
         <footer className='footer'>
             <div className='container'>
-                Footer
+                All rights reserver @Techcrack 2026 June
             </div>
         </footer>
     )

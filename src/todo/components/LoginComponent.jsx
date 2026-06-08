@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import {useNavigate} from 'react-router-dom'
-import { useAuth } from './security/AuthenticationComponent';
+import {useNavigate, Navigate} from 'react-router-dom'
+import { useAuth } from '../security/AuthenticationComponent';
 import './TodoApp.css'
 
 function LoginComponent() {
@@ -11,6 +11,8 @@ function LoginComponent() {
     const navigate = useNavigate()
     
     const auth = useAuth();
+
+    if (auth.isAuthenticated) return <Navigate to={`/welcome/${username}`}></Navigate>
     
 
     function setUserNameState(event) {
@@ -21,8 +23,9 @@ function LoginComponent() {
         setPassword(event.target.value)
     }
 
-    function authenticateUserCredentials() {
-        if (auth.login(username, password)) {
+    async function authenticateUserCredentials() {
+        const success = await auth.login(username, password)
+        if (success) {
             navigate(`/welcome/${username}`)
         }
         else  {

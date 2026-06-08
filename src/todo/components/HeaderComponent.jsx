@@ -1,5 +1,5 @@
 import {Link} from 'react-router-dom'
-import { useAuth } from './security/AuthenticationComponent';
+import { useAuth } from '../security/AuthenticationComponent';
 
 function HeaderComponent() {
     const auth = useAuth();
@@ -9,12 +9,12 @@ function HeaderComponent() {
             <div className="container">
                 <div className="row">
                     <nav className="navbar navbar-expand-lg">
-                        <a className="navbar-brand ms-2 fs-2 fw-bold text-black" href="https://www.youtube.com">Techcrack</a>
+                        <h1 className="navbar-brand ms-2 fs-2 fw-bold text-black"> Techcrack</h1>
                         <div className="collapse navbar-collapse">
                             <ul className="navbar-nav">
                                 <li className="nav-item fs-5">
                                     { auth.isAuthenticated && 
-                                        <Link className="nav-link" to="/welcome/Techcrack">
+                                        <Link className="nav-link" to= {`/welcome/${localStorage.getItem("username")}`}>
                                             Home
                                         </Link> } 
                                 </li>

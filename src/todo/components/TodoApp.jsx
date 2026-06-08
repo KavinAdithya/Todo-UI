@@ -7,8 +7,10 @@ import LoginComponent from './LoginComponent';
 import WelcomeComponent from './WelcomeComponent';
 import TodosComponent from './TodosComponent';
 import LogoutComponent from './LogoutComponent';
-import AuthenticationComponent from './security/AuthenticationComponent'
-import { AuthenticatedRoute } from './security/AuthenticationComponent'
+import AuthenticationComponent from '../security/AuthenticationComponent'
+import { AuthenticatedRoute } from '../security/AuthenticationComponent'
+import Test from './TestComponent';
+import CreateTodoComponent from './CreateTodoComponent';
 
 function TodoApp() {
 
@@ -27,12 +29,22 @@ function TodoApp() {
                         <Route path='/todos'               element={
                                 <AuthenticatedRoute>
                                     <TodosComponent/>
-                                </AuthenticatedRoute>}/>
+                                </AuthenticatedRoute>
+                                }/>
                         <Route path='/logout'               element={
                                 <AuthenticatedRoute>
                                     <LogoutComponent/>
                                 </AuthenticatedRoute>
                                 }/>
+                        <Route path='/users/:username/todo-new' element = {
+                            <AuthenticatedRoute>
+                                <CreateTodoComponent/>
+                            </AuthenticatedRoute>
+                            }
+                        />
+                        <Route path='/test' element={
+                            <Test></Test>
+                        }></Route>
                     </Routes>
                     <FooterComponent/>  
                 </BrowserRouter>
