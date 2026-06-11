@@ -1,23 +1,114 @@
-import { useState } from "react";
-import { createTodo } from "../service/TodosApiService";
+import { useState, useEffect } from "react";
+import { createTodo, getTodo, updateTodo } from "../service/TodosApiService";
+import { useNavigate, useParams } from "react-router-dom";
 
-function CreateTodoComponent() {
+function TodoFormComponent() {
+
+    const {id} = useParams()
 
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [dueDate, setDueDate] = useState("");
-    const [completed, setCompleted] = useState(false);
+    const [completed, setCompleted] = useState(false);  
+    const username = localStorage.getItem('username')
+
+    const navigate = useNavigate()
+    const [message, setMessage] = useState(null)
+
+    async function retrieveTodo(username, id) {
+        return await getTodo(username, id)
+                .then(response => {
+                    console.log(response)
+                    return response.data.data
+                })
+                .catch (
+                    error =>  {
+                        setMessage(error.message)
+                        console.log(error)
+                    }
+
+                )
+                
+    }
+
+        async function loadTodo() {
+
+        const todo =
+            await retrieveTodo(
+                username,
+                id
+            );
+
+        setTitle(todo.title);
+        setDescription(todo.description);
+        setDueDate(todo.dueDate);
+        setCompleted(todo.completed);
+    }
+
+    useEffect(() => {
+
+        if(id !== "-1") {
+
+            
+            loadTodo();
+        }
+
+    }, // eslint-disable-next-line 
+    [id]);
+
 
     async function setTodoData() {
 
-        const todo = {
-            todoTitle: title,
-            description,
-            dueDate,
-            completed
-        };
 
-        await createTodo(localStorage.getItem("username"), todo)
+        if (id === "-1") {
+            const todo = {
+                title,
+                description,
+                dueDate,
+                completed
+            };
+
+            await createTodo(localStorage.getItem("username"), todo)
+                .then(
+                    (response) => {
+                        alert(response.data.message);
+                        navigate(`/todos`)
+                    }
+                )
+                .catch (
+                    error =>  {
+                        setMessage(error.message)
+                        console.log(error)
+                    }
+
+                )
+        } else {
+            const todo = {
+                id,
+                title,
+                description,
+                dueDate,
+                completed
+            };
+
+            await updateTodo(localStorage.getItem("username"),  todo)
+                .then(
+                    (response) => {
+                        console.log(response)
+                        alert(response.data.message);
+                        navigate(`/todos`)
+                    }
+                )
+                .catch (
+                    error =>  {
+                        setMessage(error.message)
+                        console.log(error)
+                    }
+
+                )
+        }
+
+        
     }
 
     return (
@@ -26,7 +117,9 @@ function CreateTodoComponent() {
             <h1 className="text-center mb-4">
                 Build Discipline
             </h1>
-
+            {
+                message && <div className="alert alert-danger">{message}</div>
+            }
             <div className="row justify-content-center">
 
                 <div className="col-md-6">
@@ -110,4 +203,4 @@ function CreateTodoComponent() {
     );
 }
 
-export default CreateTodoComponent;
+export default TodoFormComponent;

@@ -18,3 +18,16 @@ export function createTodo(username, todo) {
         todo
     )
 }
+
+export function getTodo(username, id) {
+    return apiClient.get(
+        `/users/${username}/todos/${id}`
+    )
+}
+
+export function updateTodo(username, todo) {
+    return apiClient.put(
+        `/users/${username}/todos`,
+        todo
+    )
+}

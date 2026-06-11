@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-    baseURL: "http://localhost:8080"
+    baseURL: "http://localhost:8080",
+    timeout: 2000
 });
 
 apiClient.interceptors.request.use(config => {
@@ -23,8 +24,18 @@ apiClient.interceptors.response.use(
     response => response,
 
     error => {
+        if(error.code === "ERR_NETWORK") {
 
-        if(error.response?.status === 401) {
+            alert(
+                "Backend Server is unavailable"
+            );
+        } else if(error.code === "ECONNABORTED") {
+
+            alert(
+                "Server is taking too long to respond"
+            );
+
+        } else if(error.response?.status === 401) {
 
             console.log(
                 "Unauthorized - Logging Out"
