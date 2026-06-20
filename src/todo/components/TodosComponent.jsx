@@ -53,7 +53,7 @@ function TodosComponent() {
 
     try {
 
-        await deleteTodo(
+        const response = await deleteTodo(
             localStorage.getItem("username"),
             id
         );
@@ -61,7 +61,7 @@ function TodosComponent() {
         setIsFailed(false);
 
         setMessage(
-            "Todo retrieved successfully"
+            response.data.message
         );
 
         retrieveTodos();
